@@ -2,20 +2,20 @@
 
 (function() {
 
-    var MainController = function ($scope,$http) {
+    var MainController = function ($scope,$http,$interval,$log,github) {
 
         $scope.message = "Hello from angular";
 
 
-        var onUserComplete = function(response) {
+        var onUserComplete = function(data) {
 
-            $scope.user = response.data;
-            $http.get($scope.user.repos_url)
+            $scope.user = data;
+            github.getRepos($scope.user)
                 .then(onRepos, onError);
         };
 
-        var onRepos = function(response) {
-            $scope.repos = response.data;
+        var onRepos = function(data) {
+            $scope.repos = data;
         }
 
         var onError = function(reason) {
@@ -24,18 +24,40 @@
         };
 
         $scope.search = function(username) {
-         
-            $http.get('https://api.github.com/users/' + username)
+            $log.info('Searchin for ' +  username);
+            github.getUser(username)
            .then(onUserComplete, onError);
+
+            if (countdownInterval) {
+                $interval.cancel(countdownInterval);
+                $scope.countdown = null;
+            }
+
         }
 
-       
+        var decrementCountdown = function() {
+            $scope.countdown -= 1;
+            if ($scope.countdown < 1) {
+                $scope.search($scope.username);
+                
+            }
+
+        };
+
+        var countdownInterval = null;
+
+        var startCountdown = function() {
+            countdownInterval =  $interval(decrementCountdown, 1000, $scope.countdown);
+        };
 
         $scope.username = "policeestebi";
+        $scope.repoSortOrder = "-stargazers_count";
+        $scope.countdown = 5;
 
+        startCountdown();
     };
 
-    angularApp.controller('MainController', ['$scope','$http', MainController]);
+    angularApp.controller('MainController', ['$scope', '$http', '$interval', '$log', 'github', MainController]);
 
 })();
 

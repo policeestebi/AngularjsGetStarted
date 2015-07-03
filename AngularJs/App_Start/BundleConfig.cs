@@ -14,6 +14,7 @@ namespace AngularJs.App_Start
             bundles.Add(new ScriptBundle("~/bundles/angularjs").Include(
                         "~/Scripts/angular.js",
                         "~/Scripts/app.js",
+                        "~/Scripts/services/github.js",
                         "~/Scripts/controllers/MainController.js"
                         ));
 

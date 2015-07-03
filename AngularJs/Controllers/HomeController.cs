@@ -14,6 +14,11 @@ namespace AngularJs.Controllers
             return View();
         }
 
+        public ActionResult UserDetails()
+        {
+            return PartialView("~/Views/Home/UserDetails.cshtml");
+        }
+
         // GET: Home/Details/5
         public ActionResult Details(int id)
         {

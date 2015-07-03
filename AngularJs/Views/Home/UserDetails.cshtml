@@ -1,0 +1,60 @@
+﻿<div class="row">
+
+    <div class="col-md-12">
+        <h2>{{user.name}}</h2>
+    </div>
+
+</div>
+<div class="row">
+
+    <div class="col-md-12">
+        <img width="100" hight="100" ng-src="{{user.avatar_url}}" title="{{user.name}}" />
+    </div>
+
+</div>
+
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        Order:
+        <select ng-model="repoSortOrder">
+            <option value="+name">Name</option>
+            <option value="-stargazers_count">Starts</option>
+            <option value="+language">Language</option>
+
+
+        </select>
+    </div>
+</div>
+
+
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Starts
+            </th>
+            <th>
+                Language
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="repo in repos | orderBy: repoSortOrder">
+            <td>
+                {{repo.name}}
+            </td>
+            <td>
+                {{repo.stargazers_count | number:1}}
+            </td>
+            <td>
+                {{repo.language}}
+            </td>
+        </tr>
+    </tbody>
+</table>
